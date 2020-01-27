@@ -1,0 +1,33 @@
+{
+    "key": "design-industries-freshdesk-integration",
+    "name": "Freshdesk Integration",
+    "description": "Freshdesk to Jira integration",
+    "baseUrl": "{{localBaseUrl}}",
+    "authentication": {
+        "type": "jwt"
+    },
+    "lifecycle": {
+        "installed": "/installed"
+    },
+    "scopes": [
+        "READ",
+        "WRITE",
+        "DELETE",
+        "ACT_AS_USER"
+    ],
+    "modules": {
+        "generalPages": [
+            {
+                "key": "hello-world-page-jira",
+                "location": "system.top.navigation.bar",
+                "name": {
+                    "value": "Freshdesk Config"
+                },
+                "url": "/fd-configure",
+                "conditions": [{
+                    "condition": "user_is_logged_in"
+                }]
+            }
+        ]
+    }
+}
