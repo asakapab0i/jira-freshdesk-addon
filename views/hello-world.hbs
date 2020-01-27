@@ -2,7 +2,7 @@
 <header class="aui-page-header">
   <div class="aui-page-header-inner">
     <div class="aui-page-header-main intro-header">
-      <h1>Welcome to FreshDesk Jira Integration!</h1>
+      <h1>Welcome to Freshdesk Jira Integration!</h1>
     </div>
 </header>
 
@@ -13,13 +13,13 @@
       <form action="#" method="post" id="fd-info" class="aui">
         <fieldset>
           <div class="field-group">
-            <label for="d-lname">FreshDesk URL</label>
-            <input class="text long-field" type="text" id="fd-url" name="fd-url" title="freshdesk url" value="{{ fdInfo.fd-url }}">
+            <label for="d-lname">Freshdesk URL</label>
+            <input class="text long-field" type="text" id="fdUrl" name="fdUrl" title="freshdesk url" value="{{ fdInfo.fdUrl }}">
             {{!-- <div class="description">URL of FreshDesk Instance</div> --}}
           </div>
           <div class="field-group">
             <label for="d-fname-short">API Key</label>
-            <input class="text medium-field" type="password" id="fd-key" name="fd-key" title="freshdesk key" value="{{ fdInfo.fd-key }}">
+            <input class="text medium-field" type="text" id="fdKey" name="fdKey" title="freshdesk key" value="{{ fdInfo.fdKey }}">
           </div>
           <div class="field-group">
             <button class="aui-button aui-button-primary" id="button-spin-2">Save</button>

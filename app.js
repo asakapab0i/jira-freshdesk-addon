@@ -83,7 +83,7 @@ app.use(helmet.noCache());
 if (devEnv) app.use(errorHandler());
 
 // Wire up routes
-routes(app, addon);
+routes(app, addon, Freshdesk);
 
 // Boot the HTTP server
 http.createServer(app).listen(port, () => {

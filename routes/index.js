@@ -1,4 +1,4 @@
-export default function routes(app, addon) {
+export default function routes(app, addon, Freshdesk) {
     // Redirect root path to /atlassian-connect.json,
     // which will be served by atlassian-connect-express.
     app.get('/', (req, res) => {
@@ -8,9 +8,6 @@ export default function routes(app, addon) {
     // This is an example route used by "generalPages" module (see atlassian-connect.json).
     // Verify that the incoming request is authenticated with Atlassian Connect.
     app.get('/fd-configure', addon.authenticate(), (req, res) => {
-
-        var freshDesk = new FreshDesk('test', 'test')
-
         // Rendering a template is easy; the render method takes two params:
         // name of template and a json object to pass the context in.
         addon.settings.get('freshdeskInfo', req.context.clientKey).then(function (data) {
