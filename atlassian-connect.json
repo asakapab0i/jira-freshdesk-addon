@@ -28,6 +28,39 @@
                     "condition": "user_is_logged_in"
                 }]
             }
+        ],
+         "jiraIssueContents": [
+            {
+              "icon": {
+                "width": 24,
+                "height": 24,
+                "url": "/img/freshdesk.png"
+              },
+              "target": {
+                "type": "web_panel",
+                "url": "/freshdesk-ticket-list?issueKey={issue.key}&issueId={issue.id}"
+              },
+              "tooltip": {
+                "value": "Freshdesk Tickets"
+              },
+              "name": {
+                "value": "Freshdesk Tickets"
+              },
+              "key": "freshdesk-tickets-list"
+            }
+        ],
+        "dialogs": [
+          {
+            "url": "/freshdesk-ticket-create?issueKey={issue.key}&issueId={issue.id}",
+            "options": {
+              "height": "200px",
+              "width": "500px",
+              "header": {
+                "value": "Create Freshdesk Ticket"
+              }
+            },
+            "key": "freshdesk-ticket-create"
+          }
         ]
     }
 }

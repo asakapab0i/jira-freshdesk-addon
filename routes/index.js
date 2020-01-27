@@ -24,7 +24,24 @@ export default function routes(app, addon, Freshdesk) {
             res.render('hello-world', {
                 title: 'Atlassian Connect',
                 fdInfo: fdinfo
-            })
+            });
         });
     });
+
+    app.get('/freshdesk-ticket-list', addon.authenticate(), (req, res) => {
+        var issueId = req.query['issueId']
+        res.render('freshdesk-ticket-list', {
+            title: 'Atlassian Connect',
+            issueId: issueId
+        });
+    })
+
+    app.get('/freshdesk-ticket-create', addon.authenticate(), (req, res) => {
+        addon.settings.get('clientInfo', req.context.clientKey).then(function (data) {
+            res.render('freshdesk-ticket-create', {
+                title: 'Atlassian Connect',
+                settings: data
+            })
+        });
+    })
 }
