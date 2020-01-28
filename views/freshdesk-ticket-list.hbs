@@ -1,8 +1,12 @@
 {{!< layout}}
-<div class="aui-page-panel main-panel">
-  <div class="aui-page-panel-inner">
-    <section class="aui-page-panel-item">
-        {{ issueId }}
-    </section>
-  </div>
-</div>
+<article class="aui-flatpack-example">
+    <nav class="aui-navgroup aui-navgroup-vertical">
+        <div class="aui-navgroup-inner">
+            <ul class="aui-nav">
+              {{#each issues}}
+                <li><a href="https://bryandevelassist.freshdesk.com/a/tickets/{{this.id}}" target="_blank">{{this.subject}}</a></li> 
+              {{/each}}
+            </ul>
+        </div>
+    </nav>
+</article>

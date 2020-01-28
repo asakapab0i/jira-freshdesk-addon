@@ -32,10 +32,15 @@ export default function routes(app, addon, Freshdesk) {
         var issueId = req.query['issueId']
         var httpClient = addon.httpClient({ clientKey: req.context.clientKey });
         httpClient.get('/rest/api/2/issue/' + issueId + '/properties/freshdesk', function (err, response, body) {
-            console.log(response)
+            var fdData = JSON.parse(response.body)
+            var issues = []
+            if (!fdData.errorMessages) {
+                issues = fdData.value.fdData
+            }
             res.render('freshdesk-ticket-list', {
                 title: 'Atlassian Connect',
-                issueId: response.body
+                issues: issues,
+                debug: response.body
             });
         });
     })
@@ -67,16 +72,20 @@ export default function routes(app, addon, Freshdesk) {
                 status: 2,
                 priority: 1
             }, function (err, data) {
-                var _fdId = data.id
+                var _fdData = data
                 addon.settings.get('clientInfo', req.context.clientKey).then(function (data) {
                     var httpClient = addon.httpClient({ clientKey: data.clientKey });
-                    var options = { "fdKeys": _fdId }
-                    console.log(data)
-                    httpClient.put({ url: '/rest/api/2/issue/' + issueId + '/properties/freshdesk', body: JSON.stringify(options) }, function (err, response, body) {
-                        // console.log(body)
-                        // console.log(response)
+                    httpClient.get('/rest/api/2/issue/' + issueId + '/properties/freshdesk', function (err, response, body) {
+                        var _oldFdData = JSON.parse(response.body)
+                        if (!_oldFdData.errorMessages) {
+                            _oldFdData = _oldFdData.value.fdData
+                            _oldFdData.push(_fdData)
+                            var options = { "fdData": _oldFdData }
+                        } else {
+                            var options = { "fdData": [_fdData] }
+                        }
+                        httpClient.put({ url: '/rest/api/2/issue/' + issueId + '/properties/freshdesk', body: JSON.stringify(options) });
                     });
-
                 });
             });
 
