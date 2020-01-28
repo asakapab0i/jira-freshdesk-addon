@@ -31,16 +31,22 @@ export default function routes(app, addon, Freshdesk) {
     app.get('/freshdesk-ticket-list', addon.authenticate(), (req, res) => {
         var issueId = req.query['issueId']
         var httpClient = addon.httpClient({ clientKey: req.context.clientKey });
-        httpClient.get('/rest/api/2/issue/' + issueId + '/properties/freshdesk', function (err, response, body) {
-            var fdData = JSON.parse(response.body)
-            var issues = []
-            if (!fdData.errorMessages) {
-                issues = fdData.value.fdData
-            }
-            res.render('freshdesk-ticket-list', {
-                title: 'Atlassian Connect',
-                issues: issues,
-                debug: response.body
+        var baseUrl = '';
+        addon.settings.get('freshdeskInfo', req.context.clientKey).then(function (data) {
+            console.log(data)
+            baseUrl = data.fdUrl;
+            httpClient.get('/rest/api/2/issue/' + issueId + '/properties/freshdesk', function (err, response, body) {
+                var fdData = JSON.parse(response.body)
+                var issues = []
+                if (!fdData.errorMessages) {
+                    issues = fdData.value.fdData
+                }
+                res.render('freshdesk-ticket-list', {
+                    title: 'Atlassian Connect',
+                    issues: issues,
+                    fdBaseUrl: baseUrl,
+                    debug: response.body
+                });
             });
         });
     })

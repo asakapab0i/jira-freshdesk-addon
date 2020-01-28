@@ -4,7 +4,7 @@
         <div class="aui-navgroup-inner">
             <ul class="aui-nav">
               {{#each issues}}
-                <li><a href="https://bryandevelassist.freshdesk.com/a/tickets/{{this.id}}" target="_blank">{{this.subject}}</a></li> 
+                <li><a href="{{../fdBaseUrl}}/a/tickets/{{this.id}}" target="_blank">{{this.subject}}</a></li> 
               {{/each}}
             </ul>
         </div>
