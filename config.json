@@ -8,7 +8,7 @@
         "port": 3000,
         // Use views/unauthorized.hbs for error page.
         "errorTemplate": true,
-        "localBaseUrl": "https://e64800ef.ngrok.io",
+        "localBaseUrl": "https://98a10087.ngrok.io",
         // atlassian-connect-express currently integrates with Sequelize for
         // persistence to store the host client information (i.e. client key,
         // host public key etc.). When no adapter is specified, it defaults to

@@ -30,18 +30,58 @@ export default function routes(app, addon, Freshdesk) {
 
     app.get('/freshdesk-ticket-list', addon.authenticate(), (req, res) => {
         var issueId = req.query['issueId']
-        res.render('freshdesk-ticket-list', {
-            title: 'Atlassian Connect',
-            issueId: issueId
+        var httpClient = addon.httpClient({ clientKey: req.context.clientKey });
+        httpClient.get('/rest/api/2/issue/' + issueId + '/properties/freshdesk', function (err, response, body) {
+            console.log(response)
+            res.render('freshdesk-ticket-list', {
+                title: 'Atlassian Connect',
+                issueId: response.body
+            });
         });
     })
 
     app.get('/freshdesk-ticket-create', addon.authenticate(), (req, res) => {
         addon.settings.get('clientInfo', req.context.clientKey).then(function (data) {
-            res.render('freshdesk-ticket-create', {
-                title: 'Atlassian Connect',
-                settings: data
-            })
+            var issueId = req.query['issueId']
+            var httpClient = addon.httpClient({ clientKey: data.clientKey });
+
+            httpClient.get('/rest/api/2/issue/' + issueId, function (err, response, body) {
+                res.render('freshdesk-ticket-create', {
+                    title: 'Atlassian Connect',
+                    issue: JSON.parse(body)
+                });
+            });
+        });
+    })
+
+    app.post('/freshdesk-ticket-create', addon.checkValidToken(), (req, res) => {
+        var issueId = req.query['issueId']
+        var ticket = req.body
+        addon.settings.get('freshdeskInfo', req.context.clientKey).then(function (data) {
+            var freshdesk = new Freshdesk(data.fdUrl, data.fdKey);
+            freshdesk.createTicket({
+                name: ticket.fdReporter,
+                email: ticket.fdEmail,
+                subject: ticket.fdTitle,
+                description: ticket.fdDesc,
+                status: 2,
+                priority: 1
+            }, function (err, data) {
+                var _fdId = data.id
+                addon.settings.get('clientInfo', req.context.clientKey).then(function (data) {
+                    var httpClient = addon.httpClient({ clientKey: data.clientKey });
+                    var options = { "fdKeys": _fdId }
+                    console.log(data)
+                    httpClient.put({ url: '/rest/api/2/issue/' + issueId + '/properties/freshdesk', body: JSON.stringify(options) }, function (err, response, body) {
+                        // console.log(body)
+                        // console.log(response)
+                    });
+
+                });
+            });
+
+            // console.log(data)
+            // console.log(req.body)
         });
     })
 }

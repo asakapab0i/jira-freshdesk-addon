@@ -1,22 +1,21 @@
 {{!< layout}}
-{{ log settings }}
 <form action="#" method="post" id="d1" class="aui" _lpchecked="1">
   <fieldset>
     <div class="field-group">
       <label for="fdTitle">Title</label>
-      <input class="text" type="text" id="fdTitle" name="fdTitle" title="title" value="{{ settings.baseUrl }}">
+      <input class="text" type="text" id="fdTitle" name="fdTitle" title="title" value="{{ issue.fields.summary }}">
     </div>
     <div class="field-group">
       <label for="fdDesc">Description</label>
-      <input class="text" type="text" id="fdDesc" name="fdDesc" title="description">
+      <textarea class="text" type="text" id="fdDesc" name="fdDesc" title="description" style="margin: 0px; width: 494px; height: 234px;">{{ issue.fields.description }}</textarea>
     </div>
     <div class="field-group">
       <label for="fdReporter">Reporter</label>
-      <input class="text" type="text" id="fdReporter" name="fdReporter" title="reporter">
+      <input class="text" type="text" id="fdReporter" name="fdReporter" title="reporter" value="{{ issue.fields.reporter.displayName }}">
     </div>
     <div class="field-group">
       <label for="fdEmail">Email</label>
-      <input class="text" type="text" id="fdEmail" name="fdEmail" title="email">
+      <input class="text" type="text" id="fdEmail" name="fdEmail" title="email" value="{{ issue.fields.creator.emailAddress }}">
     </div>
   </fieldset>
 
