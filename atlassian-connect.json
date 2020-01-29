@@ -18,12 +18,12 @@
     "modules": {
         "generalPages": [
             {
-                "key": "hello-world-page-jira",
+                "key": "freshdesk-configuration-page-jira",
                 "location": "system.top.navigation.bar",
                 "name": {
                     "value": "Freshdesk Config"
                 },
-                "url": "/fd-configure",
+                "url": "/freshdesk-configure",
                 "conditions": [{
                     "condition": "user_is_logged_in"
                 }]

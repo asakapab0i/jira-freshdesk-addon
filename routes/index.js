@@ -1,27 +1,22 @@
 export default function routes(app, addon, Freshdesk) {
-    // Redirect root path to /atlassian-connect.json,
-    // which will be served by atlassian-connect-express.
+
     app.get('/', (req, res) => {
         res.redirect('/atlassian-connect.json');
     });
 
-    // This is an example route used by "generalPages" module (see atlassian-connect.json).
-    // Verify that the incoming request is authenticated with Atlassian Connect.
-    app.get('/fd-configure', addon.authenticate(), (req, res) => {
-        // Rendering a template is easy; the render method takes two params:
-        // name of template and a json object to pass the context in.
+    app.get('/freshdesk-configure', addon.authenticate(), (req, res) => {
         addon.settings.get('freshdeskInfo', req.context.clientKey).then(function (data) {
-            res.render('hello-world', {
+            res.render('freshdesk-configuration', {
                 title: 'Atlassian Connect',
                 fdInfo: data
             })
         });
     });
 
-    app.post('/fd-configure', addon.checkValidToken(), (req, res) => {
+    app.post('/freshdesk-configure', addon.checkValidToken(), (req, res) => {
         var fdinfo = req.body;
         addon.settings.set('freshdeskInfo', fdinfo, req.context.clientKey).then(function () {
-            res.render('hello-world', {
+            res.render('freshdesk-configuration', {
                 title: 'Atlassian Connect',
                 fdInfo: fdinfo
             });
@@ -33,7 +28,6 @@ export default function routes(app, addon, Freshdesk) {
         var httpClient = addon.httpClient({ clientKey: req.context.clientKey });
         var baseUrl = '';
         addon.settings.get('freshdeskInfo', req.context.clientKey).then(function (data) {
-            console.log(data)
             baseUrl = data.fdUrl;
             httpClient.get('/rest/api/2/issue/' + issueId + '/properties/freshdesk', function (err, response, body) {
                 var fdData = JSON.parse(response.body)
@@ -44,8 +38,7 @@ export default function routes(app, addon, Freshdesk) {
                 res.render('freshdesk-ticket-list', {
                     title: 'Atlassian Connect',
                     issues: issues,
-                    fdBaseUrl: baseUrl,
-                    debug: response.body
+                    fdBaseUrl: baseUrl
                 });
             });
         });
@@ -94,9 +87,6 @@ export default function routes(app, addon, Freshdesk) {
                     });
                 });
             });
-
-            // console.log(data)
-            // console.log(req.body)
         });
     })
 }
